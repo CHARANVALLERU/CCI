@@ -1,26 +1,633 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Cool slate-teal agency palette — distinct from pure zinc/black reference */
+  --background: #f8f7fc;
+  --foreground: #475569;
+  --heading: #0c1222;
+  --surface: rgba(255, 255, 255, 0.5);
+  --surface-strong: rgba(255, 255, 255, 0.68);
+  --border: rgba(15, 46, 58, 0.12);
+  --border-soft: rgba(15, 46, 58, 0.07);
+  --muted: #64748b;
+  --accent: #1a3a4a;
+  --accent-fg: #f8fafc;
+  --accent-soft: #2a6f7a;
+  --glass: rgba(255, 255, 255, 0.48);
+  --glass-border: rgba(232, 238, 242, 0.85);
+  --grid-dot: #c9d0d8;
+  --grad-a: #f3e8ff;
+  --grad-b: #eef2ff;
+  --grad-c: #e0f2fe;
+  --grad-d: #f5f3ff;
+  --grad-accent: rgba(99, 102, 241, 0.16);
+  --grad-mist: rgba(139, 92, 246, 0.14);
+  --brand-purple: #8b5cf6;
+  --brand-indigo: #6366f1;
+  --grad-lavender: #c7c3fc;
+  --grad-lavender-soft: #e4e2ff;
+  --grad-sky: #dbeafe;
+  --grad-sky-deep: #bfdbfe;
+  --grad-vignette-lavender: rgba(165, 164, 250, 0.14);
+  --grad-vignette-sky: rgba(147, 197, 253, 0.12);
+  --cursor-dot: #0c1222;
+  --cursor-ring: rgba(42, 111, 122, 0.55);
+  --cursor-glow: rgba(42, 111, 122, 0.12);
+  --shadow-card: 0 1px 2px rgba(12, 18, 34, 0.03), 0 8px 28px rgba(12, 18, 34, 0.05);
+  --shadow-card-hover: 0 4px 14px rgba(12, 18, 34, 0.07), 0 18px 44px rgba(12, 18, 34, 0.08);
+  --shadow-nav: 0 1px 0 rgba(12, 18, 34, 0.05), 0 10px 28px rgba(12, 18, 34, 0.05);
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-heading: var(--heading);
+  --color-surface: var(--surface);
+  --color-border: var(--border);
+  --color-border-soft: var(--border-soft);
+  --color-muted: var(--muted);
+  --color-accent: var(--accent);
+  --color-accent-fg: var(--accent-fg);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  --font-display: var(--font-inter-display);
+  --shadow-card: var(--shadow-card);
+  --shadow-card-hover: var(--shadow-card-hover);
+  --shadow-nav: var(--shadow-nav);
+  --animate-marquee: marquee 12s linear infinite;
+  --animate-marquee-reverse: marquee-reverse 13.33s linear infinite;
+  --animate-pulse-dot: pulse-dot 1.6s ease-in-out infinite;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@keyframes marquee {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-50%, 0, 0);
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@keyframes marquee-reverse {
+  from {
+    transform: translate3d(-50%, 0, 0);
+  }
+  to {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes hero-glass-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes pulse-dot {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.45;
+    transform: scale(0.85);
+  }
+}
+
+/* Soft light-gradient aurora — GPU translate/scale only */
+@keyframes cci-grad-aurora {
+  0%,
+  100% {
+    transform: translate3d(-4%, -2%, 0) scale(1) rotate(0deg);
+    opacity: 0.85;
+  }
+  40% {
+    transform: translate3d(6%, 4%, 0) scale(1.12) rotate(4deg);
+    opacity: 1;
+  }
+  70% {
+    transform: translate3d(-2%, 8%, 0) scale(0.96) rotate(-3deg);
+    opacity: 0.9;
+  }
+}
+
+@keyframes cci-grad-sweep {
+  0% {
+    transform: translate3d(-18%, 0, 0) rotate(-8deg);
+  }
+  50% {
+    transform: translate3d(12%, -6%, 0) rotate(6deg);
+  }
+  100% {
+    transform: translate3d(-18%, 0, 0) rotate(-8deg);
+  }
+}
+
+@keyframes cci-grad-pulse {
+  0%,
+  100% {
+    opacity: 0.55;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.9;
+    transform: scale(1.08);
+  }
+}
+
+/* Background mesh — slow orb drift + trail shimmer (GPU transform/opacity) */
+@keyframes cci-mesh-drift-a {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  33% {
+    transform: translate3d(4.2%, 2.6%, 0) scale(1.05);
+  }
+  66% {
+    transform: translate3d(-2.8%, 4.2%, 0) scale(0.96);
+  }
+}
+
+@keyframes cci-mesh-drift-b {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  40% {
+    transform: translate3d(-4.8%, 3%, 0) scale(1.06);
+  }
+  70% {
+    transform: translate3d(3%, -3.5%, 0) scale(0.97);
+  }
+}
+
+@keyframes cci-mesh-drift-c {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+    opacity: 0.85;
+  }
+  50% {
+    transform: translate3d(2.4%, -4%, 0) scale(1.07);
+    opacity: 1;
+  }
+}
+
+/* Goo-merged blobs — Soft Background–style independent drift paths */
+@keyframes cci-blob-drift-a {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  35% {
+    transform: translate3d(5%, 3.5%, 0) scale(1.08);
+  }
+  68% {
+    transform: translate3d(-3%, 5%, 0) scale(0.94);
+  }
+}
+
+@keyframes cci-blob-drift-b {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  45% {
+    transform: translate3d(-4.5%, 2%, 0) scale(1.1);
+  }
+  75% {
+    transform: translate3d(3.5%, -4%, 0) scale(0.96);
+  }
+}
+
+@keyframes cci-blob-drift-c {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(2%, -5%, 0) scale(1.06);
+  }
+}
+
+@keyframes cci-mesh-trail {
+  0%,
+  100% {
+    opacity: 0.55;
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    opacity: 0.9;
+    transform: translate3d(1.4%, -1%, 0);
+  }
+}
+
+@keyframes cci-mesh-dot-breathe {
+  0%,
+  100% {
+    opacity: 0.92;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+@keyframes cci-trail-dash {
+  to {
+    stroke-dashoffset: -120;
+  }
+}
+
+@keyframes cci-noise-shimmer {
+  0%,
+  100% {
+    opacity: 0.018;
+  }
+  50% {
+    opacity: 0.042;
+  }
+}
+
+@keyframes cci-noise-shift {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(-2%, -3%, 0);
+  }
+}
+
+@keyframes cci-heading-gradient-shift {
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+@keyframes features-pipeline-scroll {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(0, -50%, 0);
+  }
+}
+
+@layer base {
+  * {
+    border-color: var(--border);
+  }
+
+  html {
+    /* Lenis owns smooth scroll; keep native auto to avoid double-smoothing */
+    scroll-behavior: auto;
+    overflow-x: hidden;
+  }
+
+  html.cci-cursor,
+  html.cci-cursor * {
+    cursor: none !important;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+
+  body {
+    background: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+    max-width: 100vw;
+  }
+
+  ::selection {
+    background: var(--accent);
+    color: var(--accent-fg);
+  }
+}
+
+@layer utilities {
+  .animate-marquee {
+    animation: var(--animate-marquee);
+    transform: translate3d(0, 0, 0);
+    will-change: transform;
+  }
+
+  .animate-marquee-reverse {
+    animation: var(--animate-marquee-reverse);
+    transform: translate3d(0, 0, 0);
+    will-change: transform;
+  }
+
+  .animate-pulse-dot {
+    animation: var(--animate-pulse-dot);
+  }
+
+  .glass-panel {
+    background: var(--glass);
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--shadow-card);
+    backdrop-filter: blur(14px) saturate(1.15);
+    -webkit-backdrop-filter: blur(14px) saturate(1.15);
+  }
+
+  .glass-panel-strong {
+    background: var(--surface-strong);
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--shadow-card);
+    backdrop-filter: blur(18px) saturate(1.2);
+    -webkit-backdrop-filter: blur(18px) saturate(1.2);
+  }
+
+  .card-surface {
+    background: var(--glass);
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--shadow-card);
+    backdrop-filter: blur(14px) saturate(1.15);
+    -webkit-backdrop-filter: blur(14px) saturate(1.15);
+  }
+
+  .hover-ring {
+    @apply ring-1 ring-slate-200/70 transition-[box-shadow,transform,ring-color] duration-300;
+  }
+
+  .hover-ring:hover {
+    @apply ring-[color:var(--accent-soft)]/30;
+    box-shadow: var(--shadow-card-hover);
+  }
+
+  .section-shell {
+    @apply relative w-full max-w-[100vw] px-4 py-20 sm:px-6 sm:py-24 lg:py-28;
+  }
+
+  .section-shell-tight {
+    @apply relative w-full max-w-[100vw] px-4 py-8 sm:px-6 sm:py-10 lg:py-12;
+  }
+
+  .section-shell-immersive {
+    @apply relative w-full max-w-[100vw] px-4 py-24 sm:px-6 sm:py-28 lg:py-32;
+  }
+
+  .story-bridge-rule {
+    height: 1px;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(99, 102, 241, 0.35) 20%,
+      rgba(6, 182, 212, 0.45) 50%,
+      rgba(99, 102, 241, 0.35) 80%,
+      transparent
+    );
+  }
+
+  .content-bounds {
+    @apply relative mx-auto flex w-full max-w-6xl flex-col;
+  }
+
+  .cci-heading-gradient {
+    background: linear-gradient(
+      102deg,
+      var(--accent-soft) 0%,
+      var(--brand-indigo) 28%,
+      #64748b 52%,
+      var(--accent) 76%,
+      var(--brand-indigo) 100%
+    );
+    background-size: 220% 100%;
+    background-position: 0% 50%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    will-change: background-position;
+  }
+
+  /* Hero "Digital" — terminal fill clipped to letterforms; escapes parent gradient clip */
+  .cci-digital-fill {
+    color: #0c1222;
+    -webkit-text-fill-color: currentColor;
+    background: none;
+    -webkit-background-clip: border-box;
+    background-clip: border-box;
+  }
+
+  .cci-digital-fill .font-mono,
+  .cci-digital-fill [class*="font-mono"] {
+    font-family: var(--font-mono), ui-monospace, monospace;
+  }
+
+  .group\/section-heading:hover .cci-heading-gradient:not(.cci-heading-gradient--latched),
+  .group\/hero-heading:hover .cci-heading-gradient:not(.cci-heading-gradient--latched) {
+    animation: cci-heading-gradient-shift 7s ease-in-out infinite;
+  }
+
+  .cci-heading-gradient--latched {
+    animation: none !important;
+    background-position: 100% 50%;
+  }
+
+  .features-glass-card {
+    box-shadow:
+      var(--shadow-card),
+      inset 0 1px 0 rgba(255, 255, 255, 0.72);
+  }
+
+  .features-list-edge {
+    mix-blend-mode: normal;
+  }
+
+  .features-scroll-viewport {
+    -webkit-mask-image: linear-gradient(
+      to bottom,
+      transparent 0%,
+      black 10%,
+      black 88%,
+      transparent 100%
+    );
+    mask-image: linear-gradient(
+      to bottom,
+      transparent 0%,
+      black 10%,
+      black 88%,
+      transparent 100%
+    );
+  }
+
+  .features-pipeline-marquee {
+    animation: features-pipeline-scroll 32s linear infinite;
+    will-change: transform;
+  }
+
+  .features-scroll-viewport:hover .features-pipeline-marquee {
+    animation-play-state: paused;
+  }
+
+  .section-rule {
+    @apply border-t border-zinc-900/[0.08];
+  }
+
+  .cci-grad-aurora {
+    animation: cci-grad-aurora 7.33s ease-in-out infinite;
+    will-change: transform, opacity;
+  }
+
+  .cci-grad-sweep {
+    animation: cci-grad-sweep 8.67s ease-in-out infinite;
+    will-change: transform;
+  }
+
+  .cci-grad-pulse {
+    animation: cci-grad-pulse 4.67s ease-in-out infinite;
+    will-change: transform, opacity;
+  }
+
+  .cci-mesh-drift-a {
+    animation: cci-mesh-drift-a 9.33s ease-in-out infinite;
+  }
+
+  .cci-mesh-drift-b {
+    animation: cci-mesh-drift-b 11.33s ease-in-out infinite;
+  }
+
+  .cci-mesh-drift-c {
+    animation: cci-mesh-drift-c 7.33s ease-in-out infinite;
+  }
+
+  .cci-blob-drift-a {
+    animation: cci-blob-drift-a 10.67s ease-in-out infinite;
+    will-change: transform;
+  }
+
+  .cci-blob-drift-b {
+    animation: cci-blob-drift-b 12.67s ease-in-out infinite;
+    will-change: transform;
+  }
+
+  .cci-blob-drift-c {
+    animation: cci-blob-drift-c 8.67s ease-in-out infinite;
+    will-change: transform;
+  }
+
+  .cci-mesh-trail {
+    animation: cci-mesh-trail 12s ease-in-out infinite;
+  }
+
+  .cci-mesh-dot-breathe {
+    animation: cci-mesh-dot-breathe 6.67s ease-in-out infinite;
+  }
+
+  .cci-mesh-orb {
+    transform: translate3d(0, 0, 0);
+  }
+
+  .cci-mesh-layer {
+    transform: translate3d(0, 0, 0);
+    backface-visibility: hidden;
+  }
+
+  .cci-trail-dash {
+    stroke-dasharray: 14 28;
+    animation: cci-trail-dash 12s linear infinite;
+  }
+
+  .cci-trail-dash-slow {
+    stroke-dasharray: 10 32;
+    animation: cci-trail-dash 18.67s linear infinite;
+  }
+
+  .cci-mesh-noise {
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    background-size: 180px 180px;
+    animation: cci-noise-shift 8s steps(2) infinite;
+  }
+
+  .cci-mesh-noise-shimmer {
+    background-size: 240px 240px;
+    animation:
+      cci-noise-shift 14.67s steps(3) infinite reverse,
+      cci-noise-shimmer 6s ease-in-out infinite;
+  }
+
+  .cci-book-call-glow {
+    animation: cci-book-call-glow 5.33s ease-in-out infinite;
+    will-change: transform, opacity;
+  }
+}
+
+@keyframes cci-book-call-glow {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+    opacity: 0.85;
+  }
+  50% {
+    transform: translate3d(4%, -3%, 0) scale(1.08);
+    opacity: 1;
+  }
+}
+
+/* Swiper pagination — slate-teal agency bullets */
+.cci-swiper-bullet {
+  display: inline-block;
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 9999px;
+  background: rgba(15, 23, 42, 0.22);
+  cursor: pointer;
+  transition:
+    width 220ms ease,
+    background-color 220ms ease;
+}
+
+.cci-swiper-bullet-active {
+  width: 1.5rem;
+  background: #0c1222;
+}
+
+.cci-cases-swiper .swiper-slide {
+  height: auto;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cci-blob-drift-a,
+  .cci-blob-drift-b,
+  .cci-blob-drift-c,
+  .cci-mesh-drift-a,
+  .cci-mesh-drift-b,
+  .cci-mesh-drift-c,
+  .cci-mesh-trail,
+  .cci-mesh-dot-breathe,
+  .cci-trail-dash,
+  .cci-trail-dash-slow,
+  .cci-mesh-noise,
+  .cci-mesh-noise-shimmer,
+  .cci-grad-aurora,
+  .cci-grad-sweep,
+  .cci-grad-pulse,
+  .animate-marquee,
+  .animate-marquee-reverse,
+  .animate-pulse-dot,
+  .cci-book-call-glow,
+  .features-pipeline-marquee,
+  .group\/section-heading:hover .cci-heading-gradient:not(.cci-heading-gradient--latched),
+  .group\/hero-heading:hover .cci-heading-gradient:not(.cci-heading-gradient--latched) {
+    animation: none !important;
+  }
+
+  .cci-swiper-bullet {
+    transition: none;
+  }
 }
