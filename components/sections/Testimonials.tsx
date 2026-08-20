@@ -68,7 +68,6 @@ export function Testimonials() {
               fadeEffect={{ crossFade: true }}
               speed={reduce ? 0 : 520}
               loop={canLoop}
-              loopAdditionalSlides={TESTIMONIALS.length}
               autoplay={
                 reduce
                   ? false

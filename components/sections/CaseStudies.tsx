@@ -86,7 +86,6 @@ export function CaseStudies() {
             grabCursor={!reduce}
             centeredSlides
             loop={canLoop}
-            loopAdditionalSlides={CASES.length * 2}
             watchSlidesProgress
             speed={reduce ? 0 : 680}
             autoplay={

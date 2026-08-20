@@ -631,3 +631,38 @@
     transition: none;
   }
 }
+
+/* ---- /watch immersive experience ---- */
+
+.watch-theme {
+  transition:
+    background-color 1.2s cubic-bezier(0.65, 0, 0.35, 1),
+    color 1.2s cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+.watch-theme a,
+.watch-theme button,
+.watch-theme h1,
+.watch-theme h2,
+.watch-theme h3,
+.watch-theme p,
+.watch-theme span,
+.watch-theme li {
+  transition: color 1.2s cubic-bezier(0.65, 0, 0.35, 1),
+    border-color 1.2s cubic-bezier(0.65, 0, 0.35, 1),
+    background-color 1.2s cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .watch-theme,
+  .watch-theme a,
+  .watch-theme button,
+  .watch-theme h1,
+  .watch-theme h2,
+  .watch-theme h3,
+  .watch-theme p,
+  .watch-theme span,
+  .watch-theme li {
+    transition: none;
+  }
+}

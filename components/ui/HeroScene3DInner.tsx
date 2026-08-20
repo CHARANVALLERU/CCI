@@ -2,7 +2,7 @@
 
 import { useFrame } from "@react-three/fiber";
 import { Environment, Float, MeshTransmissionMaterial } from "@react-three/drei";
-import { useMemo, useRef } from "react";
+import { Suspense, useMemo, useRef } from "react";
 import type { Group } from "three";
 
 type HeroScene3DInnerProps = {
@@ -77,11 +77,14 @@ export function HeroScene3DInner({ pointer, animate }: HeroScene3DInnerProps) {
   return (
     <>
       <ambientLight intensity={0.65} />
+      <hemisphereLight args={["#f8fafc", "#94a3b8", 0.45]} />
       <directionalLight position={[4, 6, 5]} intensity={1.1} color="#F8FAFC" />
       <pointLight position={[-3, 2, 4]} intensity={0.85} color="#A5B4FC" />
       <pointLight position={[3, -2, 2]} intensity={0.55} color="#7DD3FC" />
-      <Environment preset="city" />
       <GlassKnot pointer={pointer} animate={animate} />
+      <Suspense fallback={null}>
+        <Environment preset="city" />
+      </Suspense>
     </>
   );
 }

@@ -1,5 +1,6 @@
 "use client";
 
+import "@/lib/three-patch";
 import { Canvas } from "@react-three/fiber";
 import { Suspense } from "react";
 import { HeroScene3DInner } from "./HeroScene3DInner";
