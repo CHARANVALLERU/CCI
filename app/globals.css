@@ -635,8 +635,9 @@
 /* ---- /watch immersive experience ---- */
 
 .watch-theme {
+  /* Transparent shell so the fixed night plate + GLB story show through. */
+  background-color: transparent !important;
   transition:
-    background-color 1.2s cubic-bezier(0.65, 0, 0.35, 1),
     color 1.2s cubic-bezier(0.65, 0, 0.35, 1);
 }
 
@@ -651,6 +652,11 @@
   transition: color 1.2s cubic-bezier(0.65, 0, 0.35, 1),
     border-color 1.2s cubic-bezier(0.65, 0, 0.35, 1),
     background-color 1.2s cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+/* Keep overlay copy readable over the night plate without boxing sections. */
+.watch-theme main > section {
+  text-shadow: 0 1px 18px rgba(2, 6, 18, 0.45);
 }
 
 @media (prefers-reduced-motion: reduce) {

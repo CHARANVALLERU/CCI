@@ -17,11 +17,13 @@ import { WatchTestimonials } from "@/components/watch/sections/WatchTestimonials
 import { WatchMission } from "@/components/watch/sections/WatchMission";
 import { WatchFooter } from "@/components/watch/sections/WatchFooter";
 import { watchState } from "@/lib/watchState";
+import { sceneState } from "@/lib/sceneState";
 import { watchThemes, type WatchThemeId } from "@/lib/watchThemes";
 
 /** Heavy WebGL layer — client-only, never blocks first paint. */
-const EngineCanvas = dynamic(
-  () => import("@/components/watch/EngineCanvas").then((m) => m.EngineCanvas),
+const StoryBackground = dynamic(
+  () =>
+    import("@/components/watch/story/StoryBackground").then((m) => m.StoryBackground),
   { ssr: false, loading: () => null },
 );
 
@@ -29,9 +31,10 @@ export function WatchExperience() {
   const [themeId, setThemeId] = useState<WatchThemeId>("aurora");
   const { scrollYProgress } = useScroll();
 
-  // Bridge root scroll progress into the WebGL loop (no re-renders).
+  // Bridge root scroll progress into the WebGL story + legacy watch helpers.
   useMotionValueEvent(scrollYProgress, "change", (v) => {
     watchState.scroll = v;
+    sceneState.scroll = v;
   });
 
   // Feed the active theme's accent to the scene.
@@ -46,13 +49,15 @@ export function WatchExperience() {
   return (
     <SmoothScroll>
       <div
-        className="watch-theme relative min-h-full overflow-x-clip"
-        style={{ backgroundColor: "var(--w-bg)", ...theme.vars } as React.CSSProperties}
+        className="watch-theme relative min-h-full overflow-x-clip bg-transparent"
+        style={{ ...theme.vars } as React.CSSProperties}
       >
         <WatchLoader />
         <WatchCursor />
-        <EngineCanvas />
-        <main className="relative z-10">
+        {/* Fixed night plate + GLB story — always behind content. */}
+        <StoryBackground />
+        {/* DOM overlay — pointer events + z-10 so it never fights the WebGL layer. */}
+        <main className="relative z-10 isolate">
           <WatchHero />
           <WatchServices active={themeId} onSelect={onSelectTheme} />
           <WatchCapabilities />

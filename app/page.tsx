@@ -11,10 +11,10 @@ import { FeatureBento } from "@/components/sections/FeatureBento";
 import { OperationsPanel } from "@/components/sections/OperationsPanel";
 import { ServicesGrid } from "@/components/sections/ServicesGrid";
 import { Testimonials } from "@/components/sections/Testimonials";
-import { BackgroundMesh } from "@/components/ui/BackgroundMesh";
 import { CustomCursor } from "@/components/ui/CustomCursor";
 import { ScrollChapterRail } from "@/components/ui/ScrollChapterRail";
 import { SmoothScroll } from "@/components/ui/SmoothScroll";
+import { BackgroundMesh } from "@/components/ui/BackgroundMesh";
 
 
 export default function Home() {
